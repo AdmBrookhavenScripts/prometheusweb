@@ -28,7 +28,9 @@ app.post("/obfuscate", upload.single("file"), (req, res) => {
   const inputPath = req.file.path;
   const originalName = req.file.originalname;
 
-  exec(`lua5.1 ./Prometheus/cli.lua --preset Medium ${inputPath}`, 
+  const preset = req.body.preset || "Medium";
+
+  exec(`lua5.1 ./Prometheus/cli.lua --preset ${preset} ${inputPath}`, 
   (err, stdout, stderr) => {
 
     if (err) {
@@ -41,10 +43,14 @@ app.post("/obfuscate", upload.single("file"), (req, res) => {
       return res.send("Arquivo obfuscado não encontrado.");
     }
 
-    res.download(obfuscatedFile, originalName.replace(".lua", ".obfuscated.lua"), () => {
-      fs.unlinkSync(inputPath);
-      fs.unlinkSync(obfuscatedFile);
-    });
+    res.download(
+      obfuscatedFile,
+      originalName.replace(".lua", ".obfuscated.lua"),
+      () => {
+        fs.unlinkSync(inputPath);
+        fs.unlinkSync(obfuscatedFile);
+      }
+    );
   });
 });
 
