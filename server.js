@@ -24,7 +24,7 @@ app.post("/obfuscate", upload.single("file"), (req, res) => {
   const inputPath = req.file.path;
   const outputPath = inputPath + "_obf.lua";
 
-  exec(`lua ./Prometheus/cli.lua --preset Medium ${inputPath} -o ${outputPath}`, 
+  exec(`lua5.1 ./Prometheus/cli.lua --preset ${preset} ${inputPath}`, 
   (err, stdout, stderr) => {
     if (err) {
   console.error("ERRO:", err);
