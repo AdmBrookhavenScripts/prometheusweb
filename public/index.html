@@ -9,17 +9,23 @@
   <h1>Prometheus Lua Obfuscator</h1>
 
   <form action="/obfuscate" method="post" enctype="multipart/form-data">
+    
     <input type="file" name="file" accept=".lua" required />
     <br><br>
 
+    <label>Nível de Obfuscation:</label>
+    <br><br>
+
     <select name="preset">
-      <option value="Low">Low</option>
+      <option value="Minify">Minify</option>
+      <option value="Weak">Weak</option>
       <option value="Medium" selected>Medium</option>
-      <option value="High">High</option>
+      <option value="Strong">Strong</option>
     </select>
 
     <br><br>
     <button type="submit">Obfuscar</button>
+
   </form>
 
 </body>
