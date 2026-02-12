@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Prometheus Web</title>
+</head>
+<body style="font-family: Arial; text-align:center; margin-top:100px;">
+
+  <h1>Prometheus Lua Obfuscator</h1>
+
+  <form action="/obfuscate" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".lua" required />
+    <br><br>
+
+    <select name="preset">
+      <option value="Low">Low</option>
+      <option value="Medium" selected>Medium</option>
+      <option value="High">High</option>
+    </select>
+
+    <br><br>
+    <button type="submit">Obfuscar</button>
+  </form>
+
+</body>
+</html>
