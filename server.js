@@ -26,7 +26,11 @@ app.post("/obfuscate", upload.single("file"), (req, res) => {
 
   exec(`lua ./Prometheus/cli.lua --preset Medium ${inputPath} -o ${outputPath}`, 
   (err, stdout, stderr) => {
-    if (err) return res.send("Erro ao obfuscar.");
+    if (err) {
+  console.error("ERRO:", err);
+  console.error("STDERR:", stderr);
+  return res.send("<pre>" + stderr + "</pre>");
+    }
 
     res.download(outputPath, "obfuscated.lua");
   });
