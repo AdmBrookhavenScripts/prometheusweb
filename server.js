@@ -1,11 +1,15 @@
 const express = require("express");
 const multer = require("multer");
 const { exec } = require("child_process");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 const upload = multer({ dest: "uploads/" });
 
@@ -22,17 +26,24 @@ app.get("/", (req, res) => {
 
 app.post("/obfuscate", upload.single("file"), (req, res) => {
   const inputPath = req.file.path;
-  const outputPath = inputPath + "_obf.lua";
 
-  exec(`lua5.1 ./Prometheus/cli.lua --preset ${preset} ${inputPath}`, 
+  exec(`lua5.1 ./Prometheus/cli.lua --preset Medium ${inputPath}`, 
   (err, stdout, stderr) => {
+
     if (err) {
-  console.error("ERRO:", err);
-  console.error("STDERR:", stderr);
-  return res.send("<pre>" + stderr + "</pre>");
+      return res.send("<pre>" + stderr + "</pre>");
     }
 
-    res.download(outputPath, "obfuscated.lua");
+    const obfuscatedFile = inputPath + "_obfuscated.lua";
+
+    if (!fs.existsSync(obfuscatedFile)) {
+      return res.send("Arquivo obfuscado não encontrado.");
+    }
+
+    res.download(obfuscatedFile, "obfuscated.lua", () => {
+      fs.unlinkSync(inputPath);
+      fs.unlinkSync(obfuscatedFile);
+    });
   });
 });
 
