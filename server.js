@@ -1,4 +1,3 @@
-app.use(express.urlencoded({ extended: true }));
 const express = require("express");
 const multer = require("multer");
 const { exec } = require("child_process");
@@ -7,7 +6,7 @@ const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(express.urlencoded({ extended: true }));
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
 }
