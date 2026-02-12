@@ -13,16 +13,7 @@ if (!fs.existsSync("uploads")) {
 
 const upload = multer({ dest: "uploads/" });
 
-app.get("/", (req, res) => {
-  res.send(`
-    <h1>Prometheus Lua Obfuscator</h1>
-    <form action="/obfuscate" method="post" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".lua" required />
-      <br><br>
-      <button type="submit">Obfuscar</button>
-    </form>
-  `);
-});
+app.use(express.static("public"));
 
 app.post("/obfuscate", upload.single("file"), (req, res) => {
   const inputPath = req.file.path;
