@@ -2,31 +2,171 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prometheus Web</title>
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #111111;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin-top: 60px;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 500;
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #2a2a2a;
+      margin: 40px 0;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .blue-button {
+      background-color: #335FFF;
+      border: none;
+      color: white;
+      font-size: 22px;
+      padding: 20px 30px;
+      border-radius: 14px;
+      cursor: pointer;
+      min-width: 260px;
+      text-align: center;
+      transition: 0.2s ease;
+    }
+
+    .blue-button:hover {
+      opacity: 0.9;
+    }
+
+    .file-text,
+    .preset-text {
+      font-size: 22px;
+      color: #cfcfcf;
+      word-break: break-word;
+    }
+
+    select {
+      display: none;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .big-button {
+      width: 100%;
+      background-color: #335FFF;
+      border: none;
+      color: white;
+      font-size: 36px;
+      padding: 26px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .big-button:hover {
+      opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        margin-top: 40px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+      }
+
+      .blue-button {
+        width: 100%;
+        min-width: unset;
+        font-size: 18px;
+        padding: 18px;
+      }
+
+      .file-text,
+      .preset-text {
+        font-size: 16px;
+      }
+
+      .big-button {
+        font-size: 24px;
+        padding: 20px;
+      }
+    }
+
+  </style>
 </head>
-<body style="font-family: Arial; text-align:center; margin-top:100px;">
 
-  <h1>Prometheus Lua Obfuscator</h1>
+<body>
 
-  <form action="/obfuscate" method="post" enctype="multipart/form-data">
-    
-    <input type="file" name="file" accept=".lua" required />
-    <br><br>
+  <div class="container">
+    <h1>Prometheus Web (Lua Obfuscator)</h1>
 
-    <label>Nível de Obfuscation:</label>
-    <br><br>
+    <form action="/obfuscate" method="post" enctype="multipart/form-data">
 
-    <select name="preset">
-      <option value="Minify">Minify</option>
-      <option value="Weak">Weak</option>
-      <option value="Medium" selected>Medium</option>
-      <option value="Strong">Strong</option>
-    </select>
+      <div class="row">
+        <label class="blue-button">
+          Upload a file
+          <input type="file" name="file" accept=".lua" required 
+            onchange="document.getElementById('fileName').innerText = this.files[0]?.name || 'No file selected.'">
+        </label>
+        <span id="fileName" class="file-text">No file selected.</span>
+      </div>
 
-    <br><br>
-    <button type="submit">Obfuscar</button>
+      <div class="row">
+        <label class="blue-button" onclick="document.getElementById('preset').focus()">
+          Select obfuscation level
+        </label>
+        <span id="presetText" class="preset-text">Medium</span>
 
-  </form>
+        <select name="preset" id="preset"
+          onchange="document.getElementById('presetText').innerText = this.value">
+          <option value="Minify">Minify</option>
+          <option value="Weak">Weak</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Strong">Strong</option>
+        </select>
+      </div>
+
+      <hr>
+
+      <button type="submit" class="big-button">
+        Obfuscate
+      </button>
+
+    </form>
+  </div>
 
 </body>
 </html>
